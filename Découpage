@@ -1,1 +1,11 @@
 Dans quel ordre le travail va-t-il être réalisé ?
+
+
+
+
+    Télécharger le fichier de données météorologiques.
+    Écrire le script Shell qui permettra à l'utilisateur de spécifier les données à analyser et de filtrer ces données.
+    Écrire le programme en langage C qui triera les lignes du fichier de données et générera un fichier de sortie trié.
+    Utiliser le script Shell pour filtrer les données en fonction des demandes de l'utilisateur, créer un fichier avec ces données et appeler le programme C pour trier ces données.
+    Utiliser le script Shell pour créer et afficher des graphiques à partir des données triées.
+

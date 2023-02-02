@@ -1,10 +1,11 @@
 #include "main.h"
 
 
+
 Pchain create_Chain(int a,int b,int c){     //create the chain for the list
 	Pchain d = malloc(sizeof(Pchain));
-	if(c==NULL){
-		exit(1);
+	if(d==NULL){
+		exit(4);
 	}
 	d->elt=a;
     d->secondelt=b;
@@ -15,21 +16,29 @@ Pchain create_Chain(int a,int b,int c){     //create the chain for the list
 
 
 
-
-Pchain insert(Pchain pliste, int e, int sleep,float  temp){    //insertion of element in the list
+Pchain insert(Pchain pliste, int e, int sleep,float temp){    //insertion of element in the list
     Pchain new= create_Chain(e,sleep,temp);
     Pchain p1 = pliste;
     if (p1 == NULL) {
         return new;
     }
-    while (p1->next != NULL && e >= p1->next->elt){
-        p1=p1->next;
+    if(strcmp(argv[3], "-r")==0){                                //compare with argument -r     
+        while (p1->next != NULL && e <= p1->next->elt){
+            p1=p1->next;
+        }
+    }
+    else if(strcmp(argv[3], "-r")!=0){
+        while (p1->next != NULL && e >= p1->next->elt){
+            p1=p1->next;
+        }
+    }
+    else{
+        exit (1);
     }
     new->next=p1->next;
     p1->next=new;
     return pliste;
 }
-
 
 
 
@@ -41,7 +50,6 @@ int sort_list(char **argv){                           //sort with a list
     char predate[30];
     float temp;
     while((fscanf(fic,"%d %s %f\n", &lieu, predate, &temp)) != EOF){    //get the elmt, date and ID station
-
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
         time_t date
@@ -54,9 +62,9 @@ int sort_list(char **argv){                           //sort with a list
         else if(strcmp(argv[5], "-id")==0){         
             list=insert(id,date,temp);
         }
-        else[
+        else{
             return 1;                       //case error
-        ]
+        }
     }
     fclose(fic);                            //close file
     fic=fopen(argv[2], "w");                                    //open file

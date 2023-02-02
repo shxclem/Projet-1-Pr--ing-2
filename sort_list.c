@@ -22,12 +22,12 @@ Pchain insert(Pchain pliste, int e, int sleep,float temp){    //insertion of ele
     if (p1 == NULL) {
         return new;
     }
-    if(strcmp(argv[3], "-r")==0){                                //compare with argument -r     
+    if(strcmp(argv[5], "-r")==0){                                //compare with argument -r     
         while (p1->next != NULL && e <= p1->next->elt){
             p1=p1->next;
         }
     }
-    else if(strcmp(argv[3], "-r")!=0){
+    else if(strcmp(argv[5], "-r")!=0){
         while (p1->next != NULL && e >= p1->next->elt){
             p1=p1->next;
         }
@@ -56,10 +56,10 @@ int sort_list(char **argv){                           //sort with a list
         if(strptime(predate, "%Y-%m-%dT%H:%M:%S", &tm) != NULL){     // change the date into int
             date=mktime(&tm);
         }
-        if(strcmp(argv[5], "-date")==0){          //compare argument to know wich data we will sort
+        if(strcmp(argv[4], "-date")==0){          //compare argument to know wich data we will sort
             list=insert(date,id,a);
         }
-        else if(strcmp(argv[5], "-id")==0){         
+        else if(strcmp(argv[4], "-id")==0){         
             list=insert(id,date,temp);
         }
         else{

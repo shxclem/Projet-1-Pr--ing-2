@@ -3,7 +3,7 @@
 
 
 PABR create_abr(int a, int b, float c){     //create the node of an ABR
-    PABR new = (PABR) malloc(sizeof(PABR));
+    PABR new = malloc(sizeof(Abr));
     if(new==NULL){
 		exit(4);
 	}
@@ -19,13 +19,13 @@ PABR create_abr(int a, int b, float c){     //create the node of an ABR
 
 PABR new_elt(PABR pa, int e, int sleep,float temp){   //insertion in abr
     if (pa==NULL){
-        return create_abr(e,sleep,temp);;
+        return create_abr(e,sleep,temp);
     }
     else if(e<pa->elt){
-        new_elt(pa->fg, e, sleep, temp);
+        pa->fg = new_elt(pa->fg, e, sleep, temp);
     }
     else if(e>=pa->elt){
-        new_elt(pa->fd,e, sleep, temp);
+        pa->fd = new_elt(pa->fd,e, sleep, temp);
     }
     return pa;
 }
@@ -34,7 +34,7 @@ PABR new_elt(PABR pa, int e, int sleep,float temp){   //insertion in abr
 
 void write_inorder(FILE *fic, PABR a){              //ascending course
     PABR temp2;
-    if (!a){
+    if (a){
         write_inorder(fic,a->fg);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
@@ -47,25 +47,25 @@ void write_inorder(FILE *fic, PABR a){              //ascending course
 
 void r_write_inorder(FILE *fic,PABR a){              //descending course
     PABR temp2;
-    if (!a){
-        write_inorder(fic,a->fd);
+    if (a){
+        r_write_inorder(fic,a->fd);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder(fic,a->fg);
+        r_write_inorder(fic,a->fg);
         free(temp2);
     }
 }
 
 
 
-int sort_abr(char **argv){
+int sort_abr(int argc, char **argv){
     PABR abr=NULL;
     FILE *fic=fopen(argv[1], "r");         //open file and read file
     if(fic==NULL) exit(2);
     int ID;
     char predate[30];
     float temp;
-    while((fscanf(fic,"%d %s %f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
+    while((fscanf(fic,"%d,%[^,],%f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
         time_t date;
@@ -86,15 +86,12 @@ int sort_abr(char **argv){
     fic=fopen(argv[2], "w+");                                    //open file
     Pchain temp2;
     if(fic==NULL) exit(3);
-    if(strcmp(argv[5], "-r")==0){               //compare with argument -r
+    if(argc == 6 && strcmp(argv[5], "-r")==0){               //compare with argument -r
         r_write_inorder(fic,abr);
     }
-    else if(strcmp(argv[5], "-r")==0){               
+    else               
         write_inorder(fic,abr);
-    }
-    else{
-        exit (1);
-    }
+
     fclose(fic);                //close file
     return 0;
 }

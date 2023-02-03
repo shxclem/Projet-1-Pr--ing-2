@@ -2,8 +2,8 @@
 
 
 
-PAVL create_avl(int a, int b, float c){     //create the node of an AVL
-    PAVL new = (PAVL) malloc(sizeof(PAVL));
+PABR create_abr(int a, int b, float c){     //create the node of an ABR
+    PABR new = (PABR) malloc(sizeof(PABR));
     if(new==NULL){
 		exit(4);
 	}
@@ -17,102 +17,49 @@ PAVL create_avl(int a, int b, float c){     //create the node of an AVL
 
 
 
-int height(PAVL avl){                                   //calculate the height of a node
-    if (!avl){
-        return 0;
+PABR new_elt(PABR pa, int e, int sleep,float temp){   //insertion in abr
+    if (pa==NULL){
+        return create_abr(e,sleep,temp);;
     }
-    return 1+max(height(avl->fg), height(avl->fd));
-}
-
-
-
-int balance(PAVL avl){                                 //calculate the balance of a node
-    if (!avl){
-        return 0;
+    else if(e<pa->elt){
+        new_elt(pa->fg, e, sleep, temp);
     }
-    return height(avl->fg) - height(avl->fd);
-}
-
-
-
-PAVL rotate_left(PAVL avl){                 //rotation left on avl
-    PAVL new = avl->fd;
-    PAVL temp = new->fg;
-    new->fg = avl;
-    avl->fd = temp;
-    return new;
-}
-
-
-
-PAVL rotate_right(PAVL avl){                //rotation right on avl
-    PAVL new=avl->fg;
-    PAVL temp=new->fd;
-    new->fd=avl;
-    avl->fg=temp;
-    return new;
-}
-
-
-
-PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in avl
-    int i=balance(pa);
-    if(!pa){
-        return create_avl(e,sleep,temp);
-    }
-    if(e<pa->elt){
-        pa->fg=insert_AVL(pa->fg, e, sleep, temp);
-    }
-    else{                                   
-        pa->fd=insert_AVL(pa->fd,e, sleep, temp);
-    }
-    if((i>1) && (e<pa->fg->elt)){
-        return rotate_right(pa);
-    }
-    if((i<-1) && (e>pa->fg->elt)){
-        return rotate_right(pa);
-    }
-    if((i>1) && (e>pa->fg->elt)){
-        pa->fg=rotate_left(pa->fg);
-        return rotate_right(pa);
-    }
-    if((i<1) && (e<pa->fg->elt)){
-        pa->fd=rotate_right(pa->fd);
-        return rotate_left(pa);
+    else if(e>=pa->elt){
+        new_elt(pa->fd,e, sleep, temp);
     }
     return pa;
 }
 
 
 
-void write_inorder_avl(FILE *fic,PAVL a){              //ascending course
-    PAVL temp2;
+void write_inorder(FILE *fic, PABR a){              //ascending course
+    PABR temp2;
     if (!a){
-        write_inorder_avl(fic,a->fg);
+        write_inorder(fic,a->fg);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder_avl(fic,a->fd);
+        write_inorder(fic,a->fd);
         free(temp2);
     }
 }
 
 
 
-void r_write_inorder_avl(FILE *fic,PAVL a){              //descending course
-    PAVL temp2;
+void r_write_inorder(FILE *fic,PABR a){              //descending course
+    PABR temp2;
     if (!a){
-        r_write_inorder_avl(fic,a->fd);
+        write_inorder(fic,a->fd);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        r_write_inorder_avl(fic,a->fg);
+        write_inorder(fic,a->fg);
         free(temp2);
     }
 }
 
 
 
-int sort_avl(char **argv){
-    PAVL avl=NULL;
+int sort_abr(char **argv){
+    PABR abr=NULL;
     FILE *fic=fopen(argv[1], "r");         //open file and read file
     if(fic==NULL) exit(2);
     int ID;
@@ -126,10 +73,10 @@ int sort_avl(char **argv){
             date=mktime(&tm);
         }
         if(strcmp(argv[4], "-date")==0){          //compare argument to know wich data we will sort
-            avl=insert_AVL(avl,date,ID,temp);
+            abr=new_elt(abr,date,ID,temp);
         }
         else if(strcmp(argv[4], "-id")==0){         
-            avl=insert_AVL(avl,ID,date,temp);
+            abr=new_elt(abr,ID,date,temp);
         }
         else{
             return 1;                       //case error
@@ -140,10 +87,10 @@ int sort_avl(char **argv){
     Pchain temp2;
     if(fic==NULL) exit(3);
     if(strcmp(argv[5], "-r")==0){               //compare with argument -r
-        r_write_inorder_avl(fic,avl);
+        r_write_inorder(fic,abr);
     }
     else if(strcmp(argv[5], "-r")==0){               
-        write_inorder_avl(fic,avl);
+        write_inorder(fic,abr);
     }
     else{
         exit (1);

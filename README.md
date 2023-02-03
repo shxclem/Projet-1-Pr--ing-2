@@ -7,9 +7,9 @@ This project is made for a school project, every part of this program is sample 
 
   shell :
   
-    *take the parameters which are choises by the user(temperature,pressure...)
+  *take the parameters which are choises by the user(temperature,pressure...)
     
-    *create a file with the parameters we need and call the c program
+  *create a file with the parameters we need and call the c program
     
     
   C :

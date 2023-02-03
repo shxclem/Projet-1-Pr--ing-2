@@ -67,7 +67,7 @@ int sort_list(char **argv){                           //sort with a list
         }
     }
     fclose(fic);                            //close file
-    fic=fopen(argv[2], "w");                                    //open file
+    fic=fopen(argv[2], "w+");                                    //open file
     Pchain temp2;
     if(fic==NULL) exit(3);
     while(list){

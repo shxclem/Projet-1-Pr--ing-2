@@ -1,8 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <math.h>
+
+
+
+#define __USE_XOPEN
+#define _GNU_SOURCE
+#include <time.h>
+
+
+
+#define max(a,b) \
+   ({ typeof (a) _a = (a); \
+       typeof (b) _b = (b); \
+     _a > _b ? _a : _b; })
 
 
 
@@ -40,8 +52,8 @@ typedef Avl* PAVL;  //PAVL = avl (--avl)
 
 //all fonction for the list
 Pchain create_Chain(int a,int b,int c);                         
-Pchain insert(char **argv,Pchain pliste, int e, int sleep,float temp);
-int sort_list(char **argv);
+Pchain insert(int argc, char **argv,Pchain pliste, int e, int sleep,float temp);
+int sort_list(int argc, char **argv);
 
 
 

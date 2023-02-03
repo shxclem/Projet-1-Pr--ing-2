@@ -52,68 +52,72 @@ if [[ ( "$exist_csv" = true ) && ( "$exist_para" = true ) ]]; then		#Verifying t
 		echo "${var[i]}"
 	done
 else
-	echo "No .csv has been written among arguments"
+	echo "No .csv or no parameters has been written among arguments"
 	exit 1
 fi 
 
+if [ -z "$place" ]; then 
+	place=default
+fi
+
 case $place in					#Defining which IDs are we going to be interested about depending on which place has been given
 "-F")
-cond="//"
+cond='!~ /61980|67005|81408|81415|81401|81405|71805|78890|78897|78922|78925|78894|61972|61976|61998/'
 ;;
 "-O")
-cond="/61980|67005/"
+cond="~ /61980|67005/"
 ;;
 "-G")
-cond="/81408|81415|81401|81405/"
+cond="~ /81408|81415|81401|81405/"
 ;;
 "-S")
-cond="/71805/"
+cond="~ /71805/"
 ;;
 "-A")
-cond="/78890|78897|78922|78925|78894/"
+cond="~ /78890|78897|78922|78925|78894/"
 ;;
 "-Q")
-cond="/61972|61976|61998/"
+cond="~ /61972|61976|61998/"
+;;
+"default")
+cond="~ /[0-9]+/"
 ;;
 esac
 
-#gcc -o main main.c
+gcc -o main main.c
 
-
-if [ -z "$sort" ]; then 					#If no type of sorting has been given, default one is used
+if [ -z "$sort" ]; then 									#If no type of sorting has been given, default one is used
 	sort=--avl
 fi
-
-echo "$sort"
 
 for (( j=0 ; j<$i ; j++))									#Deciding what to do depending on the parameters that have been given
 do
 	if [[ "${var[j]}" = "-t1" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$12 }' input/$csv_file > fileT1m.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$12 }' input/$csv_file > fileT1m.csv
 		echo "fileT1m.csv generated"
 		./main fileT1m.csv exitT1m.csv "$sort" -id
 		
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$13 }' input/$csv_file > fileT1M.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$13 }' input/$csv_file > fileT1M.csv
 		echo "fileT1M.csv generated"
 		./main fileT1M.csv exitT1M.csv "$sort" -id
 		
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT1.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$11 }' input/$csv_file > fileT1.csv
 		echo "fileT1.csv generated"
 		./main fileT1.csv exitT1.csv "$sort" -id
 	fi
 	
 	if [[ "${var[j]}" = "-t2" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT2.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$11 }' input/$csv_file > fileT2.csv
 		echo "fileT2.csv generated"
-		./main fileT2.csv exitT2.csv "$sort" -date				 fichier entrer - fichier sortie - r( ordre decroissant)- (avl abr tab)-date ou id
+		./main fileT2.csv exitT2.csv "$sort" -date	
 		
 	fi	
 	
 	if [[ "${var[j]}" = "-t3" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT3.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$11 }' input/$csv_file > fileT3.csv
 		echo "fileT3.csv generated"
 		./main fileT3.csv exitT3a.csv "$sort" -date
-		./main fileT3.csv exitT3b.csv "$sort" -did
+		./main fileT3.csv exitT3b.csv "$sort" -id
 		
 	fi
 	
@@ -122,40 +126,39 @@ do
 	fi
 	
 	if [[ "${var[j]}" = "-p2" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$7 }' input/$csv_file > fileP2.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$7 }' input/$csv_file > fileP2.csv
 		echo "fileP2.csv generated"
 		./main fileP2.csv exitP2.csv "$sort" -date
 		
 	fi
 	
 	if [[ "${var[j]}" = "-p3" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$7 }' input/$csv_file > fileP3.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$7 }' input/$csv_file > fileP3.csv
 		echo "fileP3.csv generated"
 		./main fileP3.csv exitP3a.csv "$sort" -date
 		./main fileP3.csv exitP3b.csv "$sort" -id
 	fi
 	
 	if [[ "${var[j]}" = "-w" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$4 }' input/$csv_file > fileWD.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$4 }' input/$csv_file > fileWD.csv
 		echo "fileWD.csv generated"
 		./main fileWD.csv exitWD.csv "$sort" -id 
 	
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$5 }' input/$csv_file > fileWS.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$5 }' input/$csv_file > fileWS.csv
 		echo "fileWS.csv generated"
 		./main fileWS.csv exitWS.csv "$sort" -id 
 	fi
 
 	if [[ "${var[j]}" = "-h" ]]; then
-		#awk -F ","  'BEGIN {OFS=","} {  if ($1 ~ /7558|7027/)  print $1,$2}' input/$csv_file > file2.csv
-		#awk -F ","  'BEGIN {OFS=","} { print $1,$2,$14 }' input/$csv_file > fileH.csv	
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$14 }' input/$csv_file > fileH.csv	
 		echo "fileH.csv generated"
 		./main fileH.csv exitH.csv "$sort" -id -r
 	fi
 
 	if [[ "${var[j]}" = "-m" ]]; then
-		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$6 }' input/$csv_file > fileM.csv
+		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$6 }' input/$csv_file > fileM.csv
 		echo "fileM.csv generated"
-		./main fileM.csv exitH.csv "$sort" -id -r 
+		./main fileM.csv exitM.csv "$sort" -id -r 
 		
 	fi
 done

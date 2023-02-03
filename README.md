@@ -35,6 +35,6 @@ The differents modes are :
   
   
 Also, it is possible to chose a sort among --avl --abr --tab, if you don't, then --avl will be selected by default.
-Finally, you need to write the ressource file containing all the datas that will be processed, this file needs to be a .csv. This .csv needs to be in the input folder in order to work.
+Finally, you need to write the ressource file containing all the datas that will be processed, this file needs to be a .csv.
 
 For example, it would be possible to execute the program in this way : bash projet_wa.sh Test1.csv -t2 -F --abr

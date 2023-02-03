@@ -1,5 +1,5 @@
 comp:
-	gcc -o prog *.c -I ./
+	gcc -o main *.c -I ./
 
 all: comp
   

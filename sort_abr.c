@@ -22,34 +22,36 @@ PABR new_elt(PABR pa, int e, int sleep,float temp){   //insertion in abr
         return create_abr(e,sleep,temp);;
     }
     else if(e<pa->elt){
-        new_elt(pa->fg, e);
+        new_elt(pa->fg, e, sleep, temp);
     }
     else if(e>=pa->elt){
-        new_elt(pa->fd,e);
+        new_elt(pa->fd,e, sleep, temp);
     }
     return pa;
 }
 
 
 
-void write_inorder(PABR a){              //ascending course
+void write_inorder(FILE *fic, PABR a){              //ascending course
+    PABR temp2;
     if (!a){
-        write_inorder(a->fg);
-        fprintf(fic,"%d %d %f\n", elt, secondelt, temp);  //write the sorted value
+        write_inorder(fic,a->fg);
+        fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder(a->fd);
+        write_inorder(fic,a->fd);
         free(temp2);
     }
 }
 
 
 
-void r_write_inorder(PABR a){              //descending course
+void r_write_inorder(FILE *fic,PABR a){              //descending course
+    PABR temp2;
     if (!a){
-        write_inorder(a->fd);
-        fprintf(fic,"%d %d %f\n", elt, secondelt, temp);  //write the sorted value
+        write_inorder(fic,a->fd);
+        fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder(a->fg);
+        write_inorder(fic,a->fg);
         free(temp2);
     }
 }
@@ -63,18 +65,18 @@ int sort_abr(char **argv){
     int ID;
     char predate[30];
     float temp;
-    while((fscanf(fic,"%d %s %f\n", &lieu, predate, &temp)) != EOF){    //get the elmt, date and ID station
+    while((fscanf(fic,"%d %s %f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
-        time_t date
+        time_t date;
         if(strptime(predate, "%Y-%m-%dT%H:%M:%S", &tm) != NULL){     // change the date into int
             date=mktime(&tm);
         }
         if(strcmp(argv[4], "-date")==0){          //compare argument to know wich data we will sort
-            abr=insert(date,id,a);
+            abr=new_elt(abr,date,ID,temp);
         }
         else if(strcmp(argv[4], "-id")==0){         
-            abr=insert(id,date,temp);
+            abr=new_elt(abr,ID,date,temp);
         }
         else{
             return 1;                       //case error
@@ -85,10 +87,10 @@ int sort_abr(char **argv){
     Pchain temp2;
     if(fic==NULL) exit(3);
     if(strcmp(argv[5], "-r")==0){               //compare with argument -r
-        r_write_inorder(abr);
+        r_write_inorder(fic,abr);
     }
     else if(strcmp(argv[5], "-r")==0){               
-        write_inorder(abr);
+        write_inorder(fic,abr);
     }
     else{
         exit (1);

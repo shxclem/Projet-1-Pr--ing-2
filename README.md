@@ -26,9 +26,14 @@ This project is made for a school project, every part of this program is sample 
 and add the paramaters that you want to process. The parameters correspond to one place among France (-F), Guyane (-G), Saint-Pierre et Miquelon (-S), Antilles (-A),
 Océan Indien (-O), Antarctique (-Q), one or many data(s) among wind (-w), height (-h), moisture (-m) and temperature (-t) or pressure (-p) with a mode. 
 The differents modes are :
+
   1 : outputs the minimum, maximum, and average temperatures or pressures per station in ascending order of station number
+  
   2 : outputs the average temperatures (or pressures) by date/time, sorted in chronological order. The average is done over all the stations.
+  
   3 : outputs temperatures (or pressures) by date/time by station. They will be sorted first in chronological order, then in ascending order of station identifier
+  
+  
 Also, it is possible to chose a sort among --avl --abr --tab, if you don't, then --avl will be selected by default.
 Finally, you need to write the ressource file containing all the datas that will be processed, this file needs to be a .csv. This .csv needs to be in the input folder in order to work.
 

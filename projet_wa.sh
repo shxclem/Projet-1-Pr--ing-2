@@ -91,72 +91,71 @@ do
 	if [[ "${var[j]}" = "-t1" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$12 }' input/$csv_file > fileT1m.csv
 		echo "fileT1m.csv generated"
-		./main fileT1m.csv exitT1m.csv --"$sort" -date
+		./main fileT1m.csv exitT1m.csv "$sort" -id
 		
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$13 }' input/$csv_file > fileT1M.csv
 		echo "fileT1M.csv generated"
-		./main fileT1m.csv exitT1m.csv --avl -date 
+		./main fileT1M.csv exitT1M.csv "$sort" -id
 		
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT1.csv
 		echo "fileT1.csv generated"
-		./main fileT1m.csv exitT1m.csv --avl -date
+		./main fileT1.csv exitT1.csv "$sort" -id
 	fi
 	
 	if [[ "${var[j]}" = "-t2" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT2.csv
 		echo "fileT2.csv generated"
-		#Exécuter le programme C par ordre chronologique				 fichier entrer - fichier sortie - r( ordre decroissant)- (avl abr tab)-date ou id
+		./main fileT2.csv exitT2.csv "$sort" -date				 fichier entrer - fichier sortie - r( ordre decroissant)- (avl abr tab)-date ou id
 		
 	fi	
 	
 	if [[ "${var[j]}" = "-t3" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$11 }' input/$csv_file > fileT3.csv
-		echo "fileT2.csv generated"
-		#Exécuter le programme C par ordre chronologique
-		#Exécuter le programme C par ordre croissant de l'ID
+		echo "fileT3.csv generated"
+		./main fileT3.csv exitT3a.csv "$sort" -date
+		./main fileT3.csv exitT3b.csv "$sort" -did
 		
 	fi
 	
 	if [[ "${var[j]}" = "-p1" ]]; then
-		./main fileT2.csv exitT2.csv --avl -date
 		echo "This argument is not available in this version"
 	fi
 	
 	if [[ "${var[j]}" = "-p2" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$7 }' input/$csv_file > fileP2.csv
-		echo "fileT2.csv generated"
-		#Exécuter le programme C par ordre chronologique
+		echo "fileP2.csv generated"
+		./main fileP2.csv exitP2.csv "$sort" -date
 		
 	fi
 	
 	if [[ "${var[j]}" = "-p3" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$7 }' input/$csv_file > fileP3.csv
-		echo "fileT2.csv generated"
-		#Exécuter le programme C par ordre chronologique
-		#Exécuter le programme C par ordre croissant de l'ID
+		echo "fileP3.csv generated"
+		./main fileP3.csv exitP3a.csv "$sort" -date
+		./main fileP3.csv exitP3b.csv "$sort" -id
 	fi
 	
 	if [[ "${var[j]}" = "-w" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$4 }' input/$csv_file > fileWD.csv
 		echo "fileWD.csv generated"
-		#Exécuter le programme C 
+		./main fileWD.csv exitWD.csv "$sort" -id 
 	
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$5 }' input/$csv_file > fileWS.csv
 		echo "fileWS.csv generated"
-		#Exécuter le programme C 
+		./main fileWS.csv exitWS.csv "$sort" -id 
 	fi
 
 	if [[ "${var[j]}" = "-h" ]]; then
 		#awk -F ","  'BEGIN {OFS=","} {  if ($1 ~ /7558|7027/)  print $1,$2}' input/$csv_file > file2.csv
 		#awk -F ","  'BEGIN {OFS=","} { print $1,$2,$14 }' input/$csv_file > fileH.csv	
 		echo "fileH.csv generated"
-		#Exécuter le programme avec ordre décroissant -r 
+		./main fileH.csv exitH.csv "$sort" -id -r
 	fi
 
 	if [[ "${var[j]}" = "-m" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { print $1,$2,$6 }' input/$csv_file > fileM.csv
 		echo "fileM.csv generated"
-		#Exécuter le programme avec ordre décroissant -r 
+		./main fileM.csv exitH.csv "$sort" -id -r 
 		
 	fi
 done

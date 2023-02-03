@@ -18,4 +18,4 @@ This project is made for a school project, every part of this program is sample 
     
 
 #to run the program do :
-  ./script.sh
+  ./projet_wa.sh

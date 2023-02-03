@@ -3,7 +3,7 @@
 
 
 PAVL create_avl(int a, int b, float c){     //create the node of an AVL
-    PAVL new = (PAVL) malloc(sizeof(PAVL));
+    PAVL new = malloc(sizeof(Avl));
     if(new==NULL){
 		exit(4);
 	}
@@ -69,14 +69,14 @@ PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in a
     if((i>1) && (e<pa->fg->elt)){
         return rotate_right(pa);
     }
-    if((i<-1) && (e>pa->fg->elt)){
-        return rotate_right(pa);
+    if((i<-1) && (e>pa->fd->elt)){
+        return rotate_left(pa);
     }
     if((i>1) && (e>pa->fg->elt)){
         pa->fg=rotate_left(pa->fg);
         return rotate_right(pa);
     }
-    if((i<1) && (e<pa->fg->elt)){
+    if((i<-1) && (e<pa->fd->elt)){
         pa->fd=rotate_right(pa->fd);
         return rotate_left(pa);
     }
@@ -87,7 +87,7 @@ PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in a
 
 void write_inorder_avl(FILE *fic,PAVL a){              //ascending course
     PAVL temp2;
-    if (!a){
+    if (a){
         write_inorder_avl(fic,a->fg);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
@@ -100,7 +100,7 @@ void write_inorder_avl(FILE *fic,PAVL a){              //ascending course
 
 void r_write_inorder_avl(FILE *fic,PAVL a){              //descending course
     PAVL temp2;
-    if (!a){
+    if (a){
         r_write_inorder_avl(fic,a->fd);
         fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
@@ -111,14 +111,14 @@ void r_write_inorder_avl(FILE *fic,PAVL a){              //descending course
 
 
 
-int sort_avl(char **argv){
+int sort_avl(int argc, char **argv){
     PAVL avl=NULL;
     FILE *fic=fopen(argv[1], "r");         //open file and read file
     if(fic==NULL) exit(2);
     int ID;
     char predate[30];
     float temp;
-    while((fscanf(fic,"%d %s %f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
+    while((fscanf(fic,"%d,%[^,],%f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
         time_t date;
@@ -139,14 +139,11 @@ int sort_avl(char **argv){
     fic=fopen(argv[2], "w+");                                    //open file
     Pchain temp2;
     if(fic==NULL) exit(3);
-    if(strcmp(argv[5], "-r")==0){               //compare with argument -r
+    if(argc == 6 && strcmp(argv[5], "-r")==0){               //compare with argument -r
         r_write_inorder_avl(fic,avl);
     }
-    else if(strcmp(argv[5], "-r")==0){               
+    else {            
         write_inorder_avl(fic,avl);
-    }
-    else{
-        exit (1);
     }
     fclose(fic);                //close file
     return 0;

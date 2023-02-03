@@ -11,7 +11,7 @@ int main(int argc,char **argv){
         else if(strcmp(argv[3], "--abr")==0){
             sort_abr(argv);
         }
-        else if(strcmp(argv[3], "--avl")==0{
+        else if(strcmp(argv[3], "--avl")==0){
             sort_avl(argv);
         }
         else{

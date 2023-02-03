@@ -9,13 +9,13 @@ This project is made for a school project, every part of this program is sample 
     *create a file with the parameters we need and call the c program
     
   C:
-    *sort information ascending or descending
-    *create a file with the informations sorted
-    *back to shell and call the gnuplot application
+  *sort information ascending or descending
+  *create a file with the informations sorted
+  *back to shell and call the gnuplot application
     
   gnuplot:
-    *creates the graph according to the information
+  *creates the graph according to the information
     
 
 #to run the program do :
-  ./projet_wa.sh
+./projet_wa.sh

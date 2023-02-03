@@ -3,7 +3,7 @@
 
 
 PAVL create_avl(int a, int b, float c){     //create the node of an AVL
-    PABR new = (PABR) malloc(sizeof(PABR));
+    PAVL new = (PAVL) malloc(sizeof(PAVL));
     if(new==NULL){
 		exit(4);
 	}
@@ -61,10 +61,10 @@ PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in a
         return create_avl(e,sleep,temp);
     }
     if(e<pa->elt){
-        pa->fg=insert_AVL(pa->fg,e);
+        pa->fg=insert_AVL(pa->fg, e, sleep, temp);
     }
     else{                                   
-        pa->fd=insert_AVL(pa->fd,e);
+        pa->fd=insert_AVL(pa->fd,e, sleep, temp);
     }
     if((i>1) && (e<pa->fg->elt)){
         return rotate_right(pa);
@@ -72,11 +72,11 @@ PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in a
     if((i<-1) && (e>pa->fg->elt)){
         return rotate_right(pa);
     }
-    if((i>1) && (elt>pa->fg->elt)){
+    if((i>1) && (e>pa->fg->elt)){
         pa->fg=rotate_left(pa->fg);
         return rotate_right(pa);
     }
-    if((i<1) && (elt<pa->fg->elt)){
+    if((i<1) && (e<pa->fg->elt)){
         pa->fd=rotate_right(pa->fd);
         return rotate_left(pa);
     }
@@ -85,24 +85,26 @@ PAVL insert_AVL(PAVL pa, int e, int sleep,float temp){          //insertion in a
 
 
 
-void write_inorder_avl(PAVL a){              //ascending course
+void write_inorder_avl(FILE *fic,PAVL a){              //ascending course
+    PAVL temp2;
     if (!a){
-        write_inorder(a->fg);
-        fprintf(fic,"%d %d %f\n", elt, secondelt, temp);  //write the sorted value
+        write_inorder_avl(fic,a->fg);
+        fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder(a->fd);
+        write_inorder_avl(fic,a->fd);
         free(temp2);
     }
 }
 
 
 
-void r_write_inorder_avl(PAVL a){              //descending course
+void r_write_inorder_avl(FILE *fic,PAVL a){              //descending course
+    PAVL temp2;
     if (!a){
-        write_inorder(a->fd);
-        fprintf(fic,"%d %d %f\n", elt, secondelt, temp);  //write the sorted value
+        r_write_inorder_avl(fic,a->fd);
+        fprintf(fic,"%d %d %f\n", a->elt, a->secondelt, a->temp);  //write the sorted value
         temp2=a;
-        write_inorder(a->fg);
+        r_write_inorder_avl(fic,a->fg);
         free(temp2);
     }
 }
@@ -116,18 +118,18 @@ int sort_avl(char **argv){
     int ID;
     char predate[30];
     float temp;
-    while((fscanf(fic,"%d %s %f\n", &lieu, predate, &temp)) != EOF){    //get the elmt, date and ID station
+    while((fscanf(fic,"%d %s %f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
-        time_t date
+        time_t date;
         if(strptime(predate, "%Y-%m-%dT%H:%M:%S", &tm) != NULL){     // change the date into int
             date=mktime(&tm);
         }
         if(strcmp(argv[4], "-date")==0){          //compare argument to know wich data we will sort
-            avl=insert_AVL(date,id,a);
+            avl=insert_AVL(avl,date,ID,temp);
         }
         else if(strcmp(argv[4], "-id")==0){         
-            avl=insert_AVL(id,date,temp);
+            avl=insert_AVL(avl,ID,date,temp);
         }
         else{
             return 1;                       //case error
@@ -138,10 +140,10 @@ int sort_avl(char **argv){
     Pchain temp2;
     if(fic==NULL) exit(3);
     if(strcmp(argv[5], "-r")==0){               //compare with argument -r
-        r_write_inorder_avl(avl);
+        r_write_inorder_avl(fic,avl);
     }
     else if(strcmp(argv[5], "-r")==0){               
-        write_inorder_avl(avl);
+        write_inorder_avl(fic,avl);
     }
     else{
         exit (1);

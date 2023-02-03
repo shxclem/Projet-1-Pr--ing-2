@@ -5,14 +5,14 @@
 This project is made for a school project, every part of this program is sample code which shows how to do the following :
 
 
-  shell:
+  shell :
   
     *take the parameters which are choises by the user(temperature,pressure...)
     
     *create a file with the parameters we need and call the c program
     
     
-  C:
+  C :
   
   *sort information ascending or descending
   

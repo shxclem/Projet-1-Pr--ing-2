@@ -136,7 +136,7 @@ int sort_avl(char **argv){
         }   
     }
     fclose(fic); 
-    fic=fopen(argv[2], "w");                                    //open file
+    fic=fopen(argv[2], "w+");                                    //open file
     Pchain temp2;
     if(fic==NULL) exit(3);
     if(strcmp(argv[5], "-r")==0){               //compare with argument -r

@@ -3,7 +3,7 @@
 
 
 Pchain create_Chain(int a,int b,int c){     //create the chain for the list
-	Pchain d = malloc(sizeof(Pchain));
+	Pchain d = malloc(sizeof(Chain));
 	if(d==NULL){
 		exit(4);
 	}
@@ -62,7 +62,6 @@ int sort_list(int argc, char **argv){                           //sort with a li
     char predate[25];
     float temp;
     while((fscanf(fic,"%d,%[^,],%f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
-       printf("a\n");
 
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;

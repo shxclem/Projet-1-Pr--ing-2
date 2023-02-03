@@ -9,14 +9,14 @@ Pchain create_Chain(int a,int b,int c){     //create the chain for the list
 	}
 	d->elt=a;
     d->secondelt=b;
-    d->temp=c
+    d->temp=c;
 	d->next=NULL;
 	return d;
 }
 
 
 
-Pchain insert(Pchain pliste, int e, int sleep,float temp){    //insertion of element in the list
+Pchain insert(char **argv, Pchain pliste, int e, int sleep,float temp){    //insertion of element in the list
     Pchain new= create_Chain(e,sleep,temp);
     Pchain p1 = pliste;
     if (p1 == NULL) {
@@ -49,18 +49,18 @@ int sort_list(char **argv){                           //sort with a list
     int ID;
     char predate[30];
     float temp;
-    while((fscanf(fic,"%d %s %f\n", &lieu, predate, &temp)) != EOF){    //get the elmt, date and ID station
+    while((fscanf(fic,"%d %s %f\n", &ID, predate, &temp)) != EOF){    //get the elmt, date and ID station
         predate[19]='\0';                                           // cut the date to have only years, months, days, and hours
         struct tm tm;
-        time_t date
+        time_t date;
         if(strptime(predate, "%Y-%m-%dT%H:%M:%S", &tm) != NULL){     // change the date into int
             date=mktime(&tm);
         }
         if(strcmp(argv[4], "-date")==0){          //compare argument to know wich data we will sort
-            list=insert(date,id,a);
+            list=insert(argv,list,date,ID,temp);
         }
         else if(strcmp(argv[4], "-id")==0){         
-            list=insert(id,date,temp);
+            list=insert(argv,list,ID,date,temp);
         }
         else{
             return 1;                       //case error
@@ -71,7 +71,7 @@ int sort_list(char **argv){                           //sort with a list
     Pchain temp2;
     if(fic==NULL) exit(3);
     while(list){
-        fprintf(fic,"%d %d %f\n", elt, secondelt, temp);  //write the sorted value
+        fprintf(fic,"%d %d %f\n", list->elt, list->secondelt, list->temp);  //write the sorted value
         temp2=list;
         list=list->next;
         free(temp2);

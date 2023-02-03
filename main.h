@@ -62,7 +62,7 @@ PABR create_abr(int a, int b, float c);
 PABR new_elt(PABR pa, int e, int sleep,float temp);
 void write_inorder(FILE *fic,PABR a);
 void r_write_inorder(FILE *fic,PABR a);
-int sort_abr(char **argv);
+int sort_abr(int argc, char **argv);
 
 
 
@@ -75,4 +75,4 @@ PAVL rotate_right(PAVL avl);
 PAVL insert_AVL(PAVL pa, int e, int sleep,float temp);
 void write_inorder_avl(FILE *fic,PAVL a);
 void r_write_inorder_avl(FILE *fic,PAVL a);
-int sort_avl(char **argv);
+int sort_avl(int argc, char **argv);

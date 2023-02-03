@@ -20,11 +20,19 @@ do
 		echo "Too much places among arguments"
 		exit 2	
 
-	elif [[ ( "$arg" == "-F"  || "$arg" == "-G" || "$arg" == "-S" || "$arg" == "-A" || "$arg" == "-O" || "$arg" == "-Q" ) && "$exist_place" = false ]]; then   #The argument corresponds to a place and no place has been written
+	elif [[ ( "$arg" == "-F"  || "$arg" == "-G" || "$arg" == "-S" ) && "$exist_place" = false ]]; then   #The argument corresponds to a place and no place has been written
 		exist_place=true
 		place="$arg"
 		var[temp]="$arg"
 		temp=$temp+1
+		echo "test"
+		
+	elif [[ ( "$arg" == "-A"  || "$arg" == "-O" || "$arg" == "-Q" ) && "$exist_place" = false ]]; then
+		exist_place=true
+		place="$arg"
+		var[temp]="$arg"
+		temp=$temp+1
+		echo "test"
 		
 	elif [[ ( "$arg" == "--tab" || "$arg" == "--abr" || "$arg" == "--avl" ) && "$exist_sort" = true ]]; then   #The argument corresponds to a type of sorting and a type of sorting has already been written
 		echo "Too much types of sorting among arguments"
@@ -84,11 +92,11 @@ cond="~ /[0-9]+/"
 ;;
 esac
 
-gcc -o main main.c
-
 if [ -z "$sort" ]; then 									#If no type of sorting has been given, default one is used
 	sort=--avl
 fi
+
+gcc -o main *.c -I ./
 
 for (( j=0 ; j<$i ; j++))									#Deciding what to do depending on the parameters that have been given
 do
@@ -143,22 +151,26 @@ do
 		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$4 }' input/$csv_file > fileWD.csv
 		echo "fileWD.csv generated"
 		./main fileWD.csv exitWD.csv "$sort" -id 
+			
 	
 		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$5 }' input/$csv_file > fileWS.csv
 		echo "fileWS.csv generated"
-		./main fileWS.csv exitWS.csv "$sort" -id 
+		./main fileWS.csv exitWS.csv "$sort" -id
+		 
+		echo "Files created but plotting not available in this version"
 	fi
 
 	if [[ "${var[j]}" = "-h" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$14 }' input/$csv_file > fileH.csv	
 		echo "fileH.csv generated"
-		./main fileH.csv exitH.csv "$sort" -id -r
+		./main fileH.csv exitH.csv "$sort" -id -r 
+		echo "File created but plotting not available in this version"	
 	fi
 
 	if [[ "${var[j]}" = "-m" ]]; then
 		awk -F ","  'BEGIN {OFS=","} { if ($1 '"$cond"') print $1,$2,$6 }' input/$csv_file > fileM.csv
 		echo "fileM.csv generated"
 		./main fileM.csv exitM.csv "$sort" -id -r 
-		
+		echo "File created but plotting not available in this version"	
 	fi
 done

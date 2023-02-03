@@ -3,7 +3,15 @@
 #include <string.h>
 #include <math.h>
 
+#define __USE_XOPEN
+#define _GNU_SOURCE
 
+#include <time.h>
+
+#define max(a,b) \
+   ({ typeof (a) _a = (a); \
+       typeof (b) _b = (b); \
+     _a > _b ? _a : _b; })
 
 #define __USE_XOPEN
 #define _GNU_SOURCE
